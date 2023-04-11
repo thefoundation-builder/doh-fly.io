@@ -2,7 +2,7 @@
 caddy run --config /app/Caddyfile &
 unbound -c /app/unbound.conf &
 unbound -c /app/unbound2.conf &
-
+test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 (
     python3 -c 'from dnsdist_console import Key;print("setKey(\""+str(Key().generate())+"\")")'
     cat /app/dnsdist.mini.conf 
