@@ -41,7 +41,7 @@ ENV SUBPATH /resolve
 
 #EXPOSE 3000/tcp
 EXPOSE 5353/tcp
-HEALTHCHECK /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
+HEALTHCHECK CMD /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
 
 #RUN apk update && apk add --no-cache  libgcc libunwind 
 #&& \
