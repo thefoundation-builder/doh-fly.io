@@ -3,8 +3,8 @@ date -u +%s > /tmp/.starttime
 caddy fmt --overwrite /app/Caddyfile
 caddy run --config /app/Caddyfile &
 
-rm /etc/dnsdist/dnsdist.conf
-rm /etc/dnsdist.conf
+rm /etc/dnsdist/dnsdist.conf &>/dev/null
+rm /etc/dnsdist.conf &>/dev/null
 
 test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 (
@@ -13,8 +13,8 @@ test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 ) > /dev/shm/dnsdist.conf
 
 
-ln -s /dev/shm/dnsdist.conf /etc/dnsdist/dnsdist.conf
-ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf
+ln -s /dev/shm/dnsdist.conf /etc/dnsdist/dnsdist.conf  &>/dev/null &
+ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection") &
 
