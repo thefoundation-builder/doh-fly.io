@@ -6,12 +6,6 @@ RUN apk update && \
     cargo install --root /doh-proxy doh-proxy
 
 
-RUN apk update && apk add libgcc libunwind && \
-    addgroup -g ${PGID} doh-proxy && \
-    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
-
-
-
 FROM alpine:3.17
 COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
 RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy
