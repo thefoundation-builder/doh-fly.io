@@ -22,7 +22,7 @@ FROM alpine:3.17
 COPY --from=build-env /src/doh-server/doh-server /doh-server
 
 RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy openssl libsodium
-RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev pip3 && pip install dnsdist_console && apk remove gcc make openssl-dev
+RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev && pip install dnsdist_console && apk remove gcc make openssl-dev
 
 
 WORKDIR /app
