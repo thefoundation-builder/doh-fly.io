@@ -1,14 +1,29 @@
-FROM alpine:latest as rsbuild
+#FROM alpine:latest as rsbuild
+#
+#RUN apk update && \
+#    apk add ca-certificates cargo gcc make rust && \
+#    mkdir /doh-proxy && \
+#    cargo install --root /doh-proxy doh-proxy
 
-RUN apk update && \
-    apk add ca-certificates cargo gcc make rust && \
-    mkdir /doh-proxy && \
-    cargo install --root /doh-proxy doh-proxy
+FROM golang:alpine AS build-env
+
+RUN apk add --no-cache git make
+
+RUN git clone https://github.com/m13253/dns-over-https.git /src
+
+WORKDIR /src
+#ADD . /src
+
+RUN make doh-server/doh-server
 
 
 FROM alpine:3.17
-COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
+#COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
+COPY --from=build-env /src/doh-server/doh-server /doh-server
+
 RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy
+
+
 WORKDIR /app
 COPY . .
 RUN chmod -R a+x /app
@@ -33,7 +48,8 @@ RUN apk update && apk add --no-cache  libgcc libunwind
 #    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
 COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
 #USER doh-proxy
-RUN echo "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH" > /launchjson.sh
+#RUN echo "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH" > /launchjson.sh
+RUN echo "/doh-server -conf /app/doh-server.conf" > /launchjson.sh
 RUN chmod +x /launchjson.sh
 #CMD ["/bin/sh", "-c", "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH"]
 
