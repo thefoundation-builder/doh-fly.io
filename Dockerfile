@@ -33,9 +33,10 @@ ENV SUBPATH /resolve
 EXPOSE 5353/tcp
 
 
-RUN apk update && apk add --no-cache  libgcc libunwind && \
-    addgroup -g ${PGID} doh-proxy && \
-    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
+RUN apk update && apk add --no-cache  libgcc libunwind 
+#&& \
+#    addgroup -g ${PGID} doh-proxy && \
+#    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
 COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
 
 #USER doh-proxy
