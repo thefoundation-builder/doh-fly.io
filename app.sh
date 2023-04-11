@@ -1,4 +1,6 @@
 #!/bin/bash
+caddy run --config /app/Caddyfile &
+
 rm /etc/dnsdist/dnsdist.conf
 rm /etc/dnsdist.conf
 
@@ -13,7 +15,6 @@ ln -s /dev/shm/dnsdist.conf /etc/dnsdist/dnsdist.conf
 ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf
 
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection") &
-caddy run --config /app/Caddyfile &
 
 unbound -c /app/unbound.conf &
 unbound -c /app/unbound2.conf &
