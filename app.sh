@@ -24,16 +24,22 @@ sh /launchjson.sh &
 
 sleep 2
 #coredns -conf /app/Corefile &
-nslookup        ya.ru 127.0.0.1 &>/dev/null &
-nslookup      ghcr.io 127.0.0.1 &>/dev/null &
-nslookup    apple.com 127.0.0.1 &>/dev/null &
-nslookup   github.com 127.0.0.1 &>/dev/null &
-nslookup   gitlab.com 127.0.0.1 &>/dev/null &
-nslookup   google.com 127.0.0.1 &>/dev/null &
-nslookup mirosoft.com 127.0.0.1 &>/dev/null & 
+(nslookup        ya.ru 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup      ghcr.io 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup    apple.com 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup   github.com 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup   gitlab.com 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup   google.com 127.0.0.1 &>/dev/null || true ) &
+sleep 1
+(nslookup mirosoft.com 127.0.0.1 &>/dev/null || true ) & 
 
-sleep 15;
+sleep 3;
 
-while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 600;done &
+(while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c|| true ;sleep 600;done )&
 wait -n
 exit $?
