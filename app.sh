@@ -19,6 +19,6 @@ sh /launchjson.sh &
 #coredns -conf /app/Corefile &
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection") &
 sleep 3;
-while (true);do (echo "topQueries()";echo "topResponses()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 600;done &
+while (true);do (echo "topQueries()";echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 600;done &
 wait -n
 exit $?
