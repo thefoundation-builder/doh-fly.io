@@ -1,12 +1,14 @@
 #!/bin/bash
-rm /etc/dnsdist/dnsdist.conf &
-rm /etc/dnsdist.conf &
+rm /etc/dnsdist/dnsdist.conf || true 
+rm /etc/dnsdist.conf || true 
 
-test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
+test -e /etc/dnsdist/ || mkdir /etc/dnsdist/ & 
+
 (
     python3 -c 'from dnsdist_console import Key;print("setKey(\""+str(Key().generate())+"\")")'
     cat /app/dnsdist.mini.conf 
 ) > /dev/shm/dnsdist.conf
+
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection") &
 
 
