@@ -1,4 +1,5 @@
 #!/bin/bash
+caddy fmt --config /app/Caddyfile
 caddy run --config /app/Caddyfile &
 
 rm /etc/dnsdist/dnsdist.conf
