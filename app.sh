@@ -41,6 +41,6 @@ sleep 1
 
 sleep 5;
 
-(while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  ( (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c || true ) |sed 's/^/'"${timediff}"' s |/g' ;sleep 600;done )
+(while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  ( (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c || true ) |sed 's/^/doh:up:'"${timediff}"' s |/g' ;sleep 1800;done )
 #wait -n
 #exit $?
