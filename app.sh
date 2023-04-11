@@ -10,6 +10,6 @@ unbound -c /app/unbound2.conf &
 sh /launchjson.sh &
 #coredns -conf /app/Corefile &
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection") &
-while (true);do (echo "topQueries()";echo "topResponses()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 3600;done &
+while (true);do (echo "topQueries()";echo "topResponses()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 600;done &
 wait -n
 exit $?
