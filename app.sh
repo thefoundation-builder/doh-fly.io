@@ -20,8 +20,18 @@ unbound -c /app/unbound2.conf &
 
 sh /launchjson.sh &
 
+sleep 2
 #coredns -conf /app/Corefile &
-sleep 3;
+nslookup        ya.ru 127.0.0.1 &>/dev/null &
+nslookup      ghcr.io 127.0.0.1 &>/dev/null &
+nslookup    apple.com 127.0.0.1 &>/dev/null &
+nslookup   github.com 127.0.0.1 &>/dev/null &
+nslookup   gitlab.com 127.0.0.1 &>/dev/null &
+nslookup   google.com 127.0.0.1 &>/dev/null &
+nslookup mirosoft.com 127.0.0.1 &>/dev/null & 
+
+sleep 15;
+
 while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c;sleep 600;done &
 wait -n
 exit $?
