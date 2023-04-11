@@ -15,7 +15,16 @@ processes = []
   exec = []
 
 [[services]]
-  http_checks = []
+  [[services.http_checks]]
+    grace_period = "23s"
+    interval = 10000
+    method = "get"
+    path = "/"
+    protocol = "http"
+    restart_limit = 0
+    timeout = 2000
+    tls_skip_verify = false
+    [services.http_checks.headers]
   internal_port = 5353
   processes = ["app"]
   protocol = "tcp"
