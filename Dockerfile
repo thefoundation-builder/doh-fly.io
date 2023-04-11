@@ -42,7 +42,7 @@ ENV SUBPATH /resolve
 EXPOSE 5353/tcp
 
 
-RUN apk update && apk add --no-cache  libgcc libunwind 
+#RUN apk update && apk add --no-cache  libgcc libunwind 
 #&& \
 #    addgroup -g ${PGID} doh-proxy && \
 #    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
