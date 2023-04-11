@@ -1,7 +1,8 @@
 #!/bin/bash
+caddy run --config /app/Caddyfile &
 unbound -c /app/unbound.conf &
 unbound -c /app/unbound2.conf &
-caddy run --config /app/Caddyfile &
+
 
 (
     python3 -c 'from dnsdist_console import Key;print("setKey(\""+str(Key().generate())+"\")")'

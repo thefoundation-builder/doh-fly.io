@@ -16,12 +16,12 @@ processes = []
 
 [[services]]
   [[services.http_checks]]
-    grace_period = "23s"
+    grace_period = "42s"
     interval = 10000
     method = "get"
     path = "/"
     protocol = "http"
-    restart_limit = 0
+    restart_limit = 3
     timeout = 2000
     tls_skip_verify = false
     [services.http_checks.headers]
