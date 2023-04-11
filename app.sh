@@ -40,6 +40,6 @@ sleep 1
 
 sleep 3;
 
-(while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c|| true ;sleep 600;done )&
-wait -n
-exit $?
+(while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c|| true ;sleep 600;done )
+#wait -n
+#exit $?
