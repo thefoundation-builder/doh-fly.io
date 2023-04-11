@@ -1,6 +1,6 @@
 # fly.toml file generated for 479d on 2022-12-28T11:51:18-05:00
 
-app = "479d"
+app = "doh-resolver-with-json"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
