@@ -46,7 +46,6 @@ RUN apk update && apk add --no-cache  libgcc libunwind
 #&& \
 #    addgroup -g ${PGID} doh-proxy && \
 #    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
-COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
 #USER doh-proxy
 #RUN echo "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH" > /launchjson.sh
 RUN echo "/doh-server -conf /app/doh-server.conf" > /launchjson.sh
