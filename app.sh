@@ -1,4 +1,5 @@
 #!/bin/bash
+date -u +%s > /tmp/.starttime
 caddy fmt --overwrite /app/Caddyfile
 caddy run --config /app/Caddyfile &
 
@@ -38,8 +39,8 @@ sleep 1
 sleep 1
 (nslookup mirosoft.com 127.0.0.5 &>/dev/null || true ) & 
 
-sleep 3;
+sleep 5;
 
-(while (true);do (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c|| true ;sleep 600;done )
+(while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  ( (echo "showResponseLatency()";echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf -c || true ) |sed 's/^/'"${timediff}"' s |/g' ;sleep 600;done )
 #wait -n
 #exit $?
