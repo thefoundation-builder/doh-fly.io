@@ -16,13 +16,13 @@ processes = []
 
 [[services]]
   http_checks = []
-  internal_port = 8053
+  internal_port = 5353
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
   [services.concurrency]
-    hard_limit = 3000
-    soft_limit = 2000
+    hard_limit = 3235
+    soft_limit = 2342
     type = "connections"
 
   [[services.ports]]
