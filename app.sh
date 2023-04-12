@@ -56,6 +56,7 @@ while (true);do
   ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' 
   ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' 
   sleep 3598
+done
 ) &
 sleep 0.5
 (while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
