@@ -64,6 +64,7 @@ done
 sleep 42;
 
 echo
+## loop 2 , show latency + all stats every hour
 
 (
 while (true);do 
@@ -76,6 +77,7 @@ while (true);do
 done
 ) &
 sleep 0.5
+## loop 2 , show stats every 15 min
 (while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
    
  ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' ;
