@@ -23,8 +23,8 @@ ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 sleep 0.2
 (dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
 
-unbound -c /app/unbound.conf 2>&1 |sed 's/^/doh-unbd1:up:'"${timediff}"' s |/g' &
-unbound -c /app/unbound2.conf2>&1 |sed 's/^/doh-unbd2:up:'"${timediff}"' s |/g' &
+unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1:up:'"${timediff}"' s |/g' &
+unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2:up:'"${timediff}"' s |/g' &
 
 sh /launchjson.sh &
 
