@@ -30,6 +30,7 @@ ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection" |sed 's/^/doh-distA:  |/g'  ) &
 sleep 0.2
 (dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
+wait
 ) & ## end dnsdist fork
 
 sleep 2
