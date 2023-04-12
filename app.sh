@@ -84,6 +84,8 @@ sleep 0.5
 
  #( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' ;
  
+   echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist.conf   -c|grep -e drop -e err -e servf |grep -v " 0$" |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g'
+  #echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist2.conf  -c|grep -e drop -e err -e servf |grep -v " 0$" |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g'
  sleep 903;done )
 #wait -n
 #exit $?
