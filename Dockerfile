@@ -41,9 +41,10 @@ ENV SUBPATH /resolve
 
 #EXPOSE 3000/tcp
 EXPOSE 5353/tcp
-HEALTHCHECK CMD /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
 
 RUN apk add --no-cache git jq && mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats && apk del git
+HEALTHCHECK CMD /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
+
 WORKDIR /app
 COPY . .
 RUN chmod -R a+x /app
