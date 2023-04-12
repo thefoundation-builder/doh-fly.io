@@ -68,19 +68,19 @@ echo
 (
 while (true);do 
   timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
-  echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist.conf   -c|grep -e drop -e err -e servf -e uptime |grep -v " 0$" |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g'
-  echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist2.conf  -c|grep -e drop -e err -e servf -e uptime |grep -v " 0$" |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g'
-  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -e "*" -e msec -e atenc
-  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -e "*" -e msec -e atenc
+  echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist.conf   -c|grep -e drop -e err -e servf -e uptime |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g'
+  echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist2.conf  -c|grep -e drop -e err -e servf -e uptime |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g'
+  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -i -e "*" -e msec -e atenc
+  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -i -e "*" -e msec -e atenc
   sleep 3598
 done
 ) &
 sleep 0.5
 (while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
    
- ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' ;
+ ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' ;
 
- ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' ;
+ ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' ;
  
  sleep 902;done )
 #wait -n
