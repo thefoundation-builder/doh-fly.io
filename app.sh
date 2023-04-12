@@ -6,7 +6,7 @@ unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 
 caddy fmt --overwrite /app/Caddyfile 
 caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
-
+0
 rm /etc/dnsdist/dnsdist.conf &>/dev/null
 rm /etc/dnsdist.conf &>/dev/null
 
@@ -55,8 +55,8 @@ while (true);do
   timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
   echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist.conf   -c|grep -e drop -e err -e servf -e uptime |grep -v " 0$" |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g'
   echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist2.conf  -c|grep -e drop -e err -e servf -e uptime |grep -v " 0$" |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g'
-  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' 
-  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' 
+  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh-dist1:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0      $' 
+  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0      $' 
   sleep 3598
 done
 ) &
