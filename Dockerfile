@@ -24,7 +24,7 @@ COPY --from=build-env /src/doh-server/doh-server /doh-server
 RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy openssl libsodium  jq
 RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev && pip install dnsdist_console && apk del gcc make openssl-dev
 
-RUN apk add --no-cache git jq && mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats && apk del git
+
 
 
 RUN echo "/doh-server -conf /app/doh-server.conf" > /launchjson.sh
@@ -43,7 +43,7 @@ ENV SUBPATH /resolve
 EXPOSE 5353/tcp
 HEALTHCHECK CMD /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
 
-
+RUN apk add --no-cache git jq && mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats && apk del git
 WORKDIR /app
 COPY . .
 RUN chmod -R a+x /app
