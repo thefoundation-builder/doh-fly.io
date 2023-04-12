@@ -34,7 +34,7 @@ wait
 ) & ## end dnsdist fork
 
 sleep 2
-sh /launchjson.sh &
+sh /launchjson.sh 2>&1 |sed 's/^/doh-json:  |/g' & &
 
 sleep 2
 #coredns -conf /app/Corefile &
