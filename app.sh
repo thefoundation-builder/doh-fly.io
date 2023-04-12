@@ -42,7 +42,10 @@ wait
 ) & ## end dnsdist fork
 
 sleep 2
-sh /launchjson.sh 2>&1 |sed 's/^/doh-json:  |/g' & 
+#sh /launchjson.sh 2>&1 |sed 's/^/doh-json:  |/g' & 
+/doh-server -conf /app/doh-server1.conf |sed 's/^/doh-json_1:  |/g' &
+/doh-server -conf /app/doh-server2.conf |sed 's/^/doh-json_2:  |/g' &
+/doh-server -conf /app/doh-server3.conf |sed 's/^/doh-json_3:  |/g' & 
 
 #coredns -conf /app/Corefile &
 

@@ -27,8 +27,8 @@ RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev && pip 
 
 
 
-RUN echo "/doh-server -conf /app/doh-server1.conf & /doh-server -conf /app/doh-server2.conf & /doh-server -conf /app/doh-server3.conf & wait;" > /launchjson.sh
-RUN chmod +x /launchjson.sh
+#RUN echo "/doh-server -conf /app/doh-server1.conf & /doh-server -conf /app/doh-server2.conf & /doh-server -conf /app/doh-server3.conf & wait;" > /launchjson.sh
+#RUN chmod +x /launchjson.sh
 
 ARG PUID=2000
 ARG PGID=2000
