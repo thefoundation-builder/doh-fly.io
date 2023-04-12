@@ -29,7 +29,7 @@ sh /launchjson.sh &
 
 sleep 2
 #coredns -conf /app/Corefile &
-for warmup in 127.0.0.5 127.0.0.6 127.0.0.7 127.0.0.8;do 
+for warmup in 127.0.0.2 127.0.0.3 127.0.0.5 127.0.0.6 127.0.0.7 127.0.0.8;do 
 (nslookup        ya.ru $warmup  &>/dev/null || true ) &
 sleep 0.2
 (nslookup      ghcr.io $warmup  &>/dev/null || true ) &
