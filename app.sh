@@ -52,7 +52,7 @@ echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist.conf   -c|grep -e drop -e err -e 
 echo "dumpStats()"|dnsdist -C /dev/shm/dnsdist2.conf  -c|grep -e drop -e err -e servf -e uptime |grep -v " 0$" |sed 's/^/doh:up:'"${timediff}"' s |/g'
  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist.conf  -c || true ) |sed 's/^/doh:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' ;
  ( (echo "showResponseLatency()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' ;
-sleep 3600
+sleep 3598
 ) &
 sleep 0.5
 (while (true);do timediff=$(($(date -u  +%s)-$(cat /tmp/.starttime)));  
@@ -61,6 +61,6 @@ sleep 0.5
 
  ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh:up:'"${timediff}"' s |/g' |grep -v '\.[0-9]0    $' ;
  
- sleep 900;done )
+ sleep 902;done )
 #wait -n
 #exit $?
