@@ -9,6 +9,9 @@ unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 [[ ! -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
 
 echo "$MYAPIKEY" > /dev/shm/dnsdist_apikey
+echo "$MYAPIKEY" > /dev/shm/dnsdist_pass
+chmod 0600 /dev/shm/dnsdist_apikey /dev/shm/dnsdist_pass &
+
 
 caddy fmt --overwrite /app/Caddyfile 
 caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
@@ -21,7 +24,7 @@ test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 (
     python3 -c 'from dnsdist_console import Key;print("setKey(\""+str(Key().generate())+"\")")'
     echo 'webserver("127.0.0.1:8083")'
-    echo 'setWebserverConfig({password="'${MYWEBSRVPASS}'", apiKey="'${MYAPIKEY}'"})'
+    echo 'setWebserverConfig({password="'$(cat /dev/shm/dnsdist_apikey)'", apiKey="'$(cat /dev/shm/dnsdist_pass)'"})'
     cat /app/dnsdist.mini.conf 
 ) > /dev/shm/dnsdist.conf
 
