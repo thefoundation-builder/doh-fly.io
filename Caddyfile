@@ -4,7 +4,7 @@
         }
 
         handle /resolv* {
-                reverse_proxy 127.0.0.1:3053 reverse_proxy 127.0.0.1:4053 reverse_proxy 127.0.0.1:5053
+                reverse_proxy 127.0.0.1:3053  127.0.0.1:4053  127.0.0.1:5053
         }
 
         handle {
