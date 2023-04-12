@@ -4,7 +4,15 @@ date -u +%s > /tmp/.starttime
 unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1: |/g' &
 unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 
-test -e /etc/custom/stats/picoinflux-dnsdist.sh && [[ ! -z "$INFLUXBLUCKET" ]] && [[ ! -z "$INFLUXTOKEN" ]] && [[ ! -z "$INFLUXURL" ]] && {
+
+[[ ! -z "$MYWEBSRVPASS" ]] && MYWEBSRVPASS=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
+[[ ! -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
+INFLUXOK=yes
+[[  -z "$INFLUXBLUCKET" ]] && INFLUXOK=no
+[[  -z "$INFLUXTOKEN" ]]   && INFLUXOK=no
+[[  -z "$INFLUXURL" ]]     && INFLUXOK=no
+
+test -e /etc/custom/stats/picoinflux-dnsdist.sh && [[ "$INFLUXOK=yes" ]] && {
 
     echo "STARTING INFLUX"
     (cd ; (echo "$INFLUXTOKEN" ;echo "$INFLUXURL/api/v2/write?org=&precision=ns&bucket=$INFFLUXBUCKET" ;echo "TOKEN=true" )|tee .picoinflux.conf > /dev/null)
@@ -22,9 +30,6 @@ caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
 ( #start dnsdist fork
 rm /etc/dnsdist/dnsdist.conf &>/dev/null
 rm /etc/dnsdist.conf &>/dev/null
-
- [[ ! -z "$MYWEBSRVPASS" ]] && MYWEBSRVPASS=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
- [[ ! -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
 
 test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 (
