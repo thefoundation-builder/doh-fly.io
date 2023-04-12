@@ -21,10 +21,10 @@ FROM alpine:3.17
 #COPY --from=rsbuild /doh-proxy/bin/doh-proxy /usr/local/bin/doh-proxy
 COPY --from=build-env /src/doh-server/doh-server /doh-server
 
-RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy openssl libsodium
+RUN apk add --no-cache bind-tools dnsdist tini bash htop mtr curl unbound caddy openssl libsodium  
 RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev && pip install dnsdist_console && apk del gcc make openssl-dev
 
-RUN mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats
+RUN apk add --no-cache git && mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats && apk del git
 
 WORKDIR /app
 COPY . .
