@@ -51,7 +51,7 @@ INFLUXOK=yes
 test -e /etc/custom/stats/picoinflux-dnsdist.sh && [[ "$INFLUXOK=yes" ]] && {
 
     echo "STARTING INFLUX"
-    (cd ; (echo "$INFLUXTOKEN" ;echo "$INFLUXURL/api/v2/write?org=&precision=ns&bucket=$INFFLUXBUCKET" ;echo "TOKEN=true" )|tee .picoinflux.conf > /dev/null)
+    (cd ; (echo "$INFLUXTOKEN" ;echo "$INFLUXURL/api/v2/write?org=&precision=ns&bucket=$INFLUXBUCKET" ;echo "TOKEN=true" )|tee .picoinflux.conf > /dev/null)
     (sleep 10
     while (true);do 
         bash /etc/custom/stats/picoinflux-dnsdist.sh http://127.0.0.1:8083 "${MYAPIKEY}" dnsdist1.$(hostname -f)
