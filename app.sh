@@ -6,7 +6,7 @@ unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 
 caddy fmt --overwrite /app/Caddyfile 
 caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
-0
+
 rm /etc/dnsdist/dnsdist.conf &>/dev/null
 rm /etc/dnsdist.conf &>/dev/null
 
