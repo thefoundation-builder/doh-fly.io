@@ -29,19 +29,21 @@ sh /launchjson.sh &
 
 sleep 2
 #coredns -conf /app/Corefile &
-(nslookup        ya.ru 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup      ghcr.io 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup    apple.com 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup   github.com 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup   gitlab.com 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup   google.com 127.0.0.5 &>/dev/null || true ) &
-sleep 1
-(nslookup mirosoft.com 127.0.0.5 &>/dev/null || true ) & 
+for warmup in 127.0.0.5 127.0.0.6 127.0.0.7 127.0.0.8;do 
+(nslookup        ya.ru $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup      ghcr.io $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup    apple.com $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup   github.com $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup   gitlab.com $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup   google.com $warmup  &>/dev/null || true ) &
+sleep 0.2
+(nslookup mirosoft.com $warmup  &>/dev/null || true ) & 
+done 
 
 sleep 5;
 
