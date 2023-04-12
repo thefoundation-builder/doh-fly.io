@@ -5,8 +5,8 @@ unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1: |/g' &
 unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 
 
-[[ ! -z "$MYWEBSRVPASS" ]] && MYWEBSRVPASS=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
-[[ ! -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
+[[  -z "$MYWEBSRVPASS" ]] && MYWEBSRVPASS=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
+[[  -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
 
 echo "$MYAPIKEY" > /dev/shm/dnsdist_apikey
 echo "$MYAPIKEY" > /dev/shm/dnsdist_pass
