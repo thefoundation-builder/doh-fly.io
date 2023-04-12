@@ -1,7 +1,11 @@
 #!/bin/bash
 date -u +%s > /tmp/.starttime
-caddy fmt --overwrite /app/Caddyfile
-caddy run --config /app/Caddyfile &
+
+unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1: |/g' &
+unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
+
+caddy fmt --overwrite /app/Caddyfile 
+caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
 
 rm /etc/dnsdist/dnsdist.conf &>/dev/null
 rm /etc/dnsdist.conf &>/dev/null
@@ -22,9 +26,6 @@ ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection" |sed 's/^/doh-distA:  |/g'  ) &
 sleep 0.2
 (dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
-
-unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1:up:'"${timediff}"' s |/g' &
-unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2:up:'"${timediff}"' s |/g' &
 
 sh /launchjson.sh &
 
@@ -47,6 +48,7 @@ sleep 0.2
 done 
 
 sleep 5;
+echo
 
 (
 while (true);do 
