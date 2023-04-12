@@ -26,10 +26,9 @@ RUN apk add --no-cache py3-pip gcc make libc-dev openssl-dev python3-dev && pip 
 
 RUN apk add --no-cache git && mkdir /etc/custom && git clone https://gitlab.com/the-foundation/picoinflux-dnsdist-stats.git /etc/custom/stats && apk del git
 
-WORKDIR /app
-COPY . .
-RUN chmod -R a+x /app
 
+RUN echo "/doh-server -conf /app/doh-server.conf" > /launchjson.sh
+RUN chmod +x /launchjson.sh
 
 ARG PUID=2000
 ARG PGID=2000
@@ -44,14 +43,17 @@ ENV SUBPATH /resolve
 EXPOSE 5353/tcp
 HEALTHCHECK CMD /bin/bash -c 'curl -s 127.0.0.1:5353 |grep -e "Hello, world" -e "uptime" -q'
 
+
+WORKDIR /app
+COPY . .
+RUN chmod -R a+x /app
 #RUN apk update && apk add --no-cache  libgcc libunwind 
 #&& \
 #    addgroup -g ${PGID} doh-proxy && \
 #    adduser -H -D -u ${PUID} -G doh-proxy doh-proxy
 #USER doh-proxy
 #RUN echo "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH" > /launchjson.sh
-RUN echo "/doh-server -conf /app/doh-server.conf" > /launchjson.sh
-RUN chmod +x /launchjson.sh
+
 #CMD ["/bin/sh", "-c", "/usr/local/bin/doh-proxy -l $LISTEN_ADDR -c $MAX_CLIENTS -u $SERVER_ADDR -t $TIMEOUT -p $SUBPATH"]
 
 CMD ["/sbin/tini","/app/app.sh"]
