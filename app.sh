@@ -31,9 +31,9 @@ grep -v addDOHLocal  /dev/shm/dnsdist.conf |sed 's/127\.0\.0\.5/127.0.0.7/g;s/12
 ln -s /dev/shm/dnsdist.conf /etc/dnsdist/dnsdist.conf  &>/dev/null &
 ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 
-(dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection" |sed 's/^/doh-distA:  |/g'  ) &
+(dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Passing a plain-text" -e "Got control connection" -e "Closed control connection" |sed 's/^/doh-distA:  |/g'  ) &
 sleep 0.2
-#(dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
+#(dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Passing a plain-text" -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
 wait
 ) & ## end dnsdist fork
 
