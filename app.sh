@@ -8,6 +8,7 @@ unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 [[ ! -z "$MYWEBSRVPASS" ]] && MYWEBSRVPASS=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
 [[ ! -z "$MYAPIKEY" ]]     &&     MYAPIKEY=$(for rounds in $(seq 1 24);do cat /dev/urandom |tr -cd '[:alnum:]_\-.'  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep ^[a-zA-Z0-9]|grep [a-zA-Z0-9]$|tail -n1)
 
+echo "$MYAPIKEY" > /dev/shm/dnsdist_apikey
 
 caddy fmt --overwrite /app/Caddyfile 
 caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
@@ -54,7 +55,7 @@ test -e /etc/custom/stats/picoinflux-dnsdist.sh && [[ "$INFLUXOK=yes" ]] && {
     (cd ; (echo "$INFLUXTOKEN" ;echo "$INFLUXURL/api/v2/write?org=&precision=ns&bucket=$INFLUXBUCKET" ;echo "TOKEN=true" )|tee .picoinflux.conf > /dev/null)
     (sleep 10
     while (true);do 
-        bash /etc/custom/stats/picoinflux-dnsdist.sh http://127.0.0.1:8083 "${MYAPIKEY}" dnsdist1.$(hostname -f)
+        bash /etc/custom/stats/picoinflux-dnsdist.sh http://127.0.0.1:8083 "$(cat /dev/shm/dnsdist_apikey)" dnsdist1.$(hostname -f)
     sleep 180
     done ) &
     echo -n ; } ;
