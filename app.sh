@@ -4,14 +4,18 @@ date -u +%s > /tmp/.starttime
 unbound -c /app/unbound.conf  2>&1 |sed 's/^/doh-unbd1: |/g' &
 unbound -c /app/unbound2.conf 2>&1 |sed 's/^/doh-unbd2: |/g' &
 
+
+
 caddy fmt --overwrite /app/Caddyfile 
 caddy run --config /app/Caddyfile    2>&1 |sed 's/^/doh-caddy:  |/g' &
 
+( #start dnsdist fork
 rm /etc/dnsdist/dnsdist.conf &>/dev/null
 rm /etc/dnsdist.conf &>/dev/null
 
 test -e /etc/dnsdist/ || mkdir /etc/dnsdist/
 (
+
     python3 -c 'from dnsdist_console import Key;print("setKey(\""+str(Key().generate())+"\")")'
     cat /app/dnsdist.mini.conf 
 ) > /dev/shm/dnsdist.conf
@@ -26,7 +30,7 @@ ln -s /dev/shm/dnsdist.conf /etc/dnsdist.conf          &>/dev/null &
 (dnsdist -C /dev/shm/dnsdist.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection" |sed 's/^/doh-distA:  |/g'  ) &
 sleep 0.2
 (dnsdist -C /dev/shm/dnsdist2.conf --supervised 2>&1 |grep -v -e "Got control connection" -e "Closed control connection"|sed 's/^/doh-distB:  |/g'  ) &
-
+) & ## end dnsdist fork
 sh /launchjson.sh &
 
 sleep 2
