@@ -84,6 +84,6 @@ sleep 0.5
 
  ( (echo "showServers()")|dnsdist -C /dev/shm/dnsdist2.conf -c || true ) |sed 's/^/doh-dist2:up:'"${timediff}"' s |/g' ;
  
- sleep 902;done )
+ sleep 903;done )
 #wait -n
 #exit $?
